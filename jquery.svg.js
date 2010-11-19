@@ -83,7 +83,7 @@ $.extend(SVGManager.prototype, {
 	/* Add the SVG object to its container. */
 	_attachSVG: function(container, settings) {
 		var svg = (container.namespaceURI == this.svgNS ? container : null);
-		var container = (svg ? null : container);
+		container = (svg ? null : container);
 		if ($(container || svg).hasClass(this.markerClassName)) {
 			return;
 		}
@@ -145,7 +145,7 @@ $.extend(SVGManager.prototype, {
 
 	/* Post-processing once loaded. */
 	_afterLoad: function(container, svg, settings) {
-		var settings = settings || this._settings[container.id];
+		settings = settings || this._settings[container.id];
 		this._settings[container ? container.id : ''] = null;
 		var wrapper = new this._wrapperClass(svg, container);
 		$.data(container || svg, PROP_NAME, wrapper);
@@ -780,9 +780,9 @@ $.extend(SVGWrapper.prototype, {
 	},
 
 	/* Create a shape node with the given settings. */
-	_makeNode: function(parent, name, settings) {
+	_makeNode: function(parent, nodeName, settings) {
 		parent = parent || this._svg;
-		var node = this._svg.ownerDocument.createElementNS($.svg.svgNS, name);
+		var node = this._svg.ownerDocument.createElementNS($.svg.svgNS, nodeName);
 		for (var name in settings) {
 			var value = settings[name];
 			if (value != null && value != null && 
