@@ -22,7 +22,7 @@ function SVGManager() {
 	this._uuid = new Date().getTime();
 	this._renesis = detectActiveX('RenesisX.RenesisCtrl');
 	this._svgWeb = typeof svgweb != 'undefined' ? true : false;
-	this._forceSvgWeb = function() { return typeof svgweb != 'undefined' && svgweb.config._forceFlash() };
+	this._forceSvgWeb = function() { return typeof svgweb != 'undefined' && svgweb.config.use == 'flash' };
 }
 
 /* Determine whether a given ActiveX control is available.
