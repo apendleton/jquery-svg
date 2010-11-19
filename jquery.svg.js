@@ -21,6 +21,8 @@ function SVGManager() {
 	this.local = this.regional['']; // Current localisation
 	this._uuid = new Date().getTime();
 	this._renesis = detectActiveX('RenesisX.RenesisCtrl');
+	this._svgWeb = typeof svgweb != 'undefined' ? true : false;
+	this._forceSvgWeb = function() { return typeof svgweb != 'undefined' && svgweb.config._forceFlash() };
 }
 
 /* Determine whether a given ActiveX control is available.
@@ -95,17 +97,23 @@ $.extend(SVGManager.prototype, {
 		}
 		$(container || svg).addClass(this.markerClassName);
 		try {
-			if (!svg) {
-				svg = document.createElementNS(this.svgNS, 'svg');
-				svg.setAttribute('version', '1.1');
-				svg.setAttribute('width', container.clientWidth);
-				svg.setAttribute('height', container.clientHeight);
-				container.appendChild(svg);
+			if (this._forceSvgWeb()) {
+				if (!svg) this._svgWebAttachSVG(container, settings);
+			} else {
+				if (!svg) {
+					svg = document.createElementNS(this.svgNS, 'svg');
+					svg.setAttribute('version', '1.1');
+					svg.setAttribute('width', container.clientWidth);
+					svg.setAttribute('height', container.clientHeight);
+					container.appendChild(svg);
+				}
+				this._afterLoad(container, svg, settings || {});
 			}
-			this._afterLoad(container, svg, settings || {});
 		}
 		catch (e) {
-			if ($.browser.msie) {
+			if (this._svgWeb && svgweb.config.supported) {
+				this._svgWebAttachSVG(container, settings);
+			} else if ($.browser.msie) {
 				if (!container.id) {
 					container.id = 'svg' + (this._uuid++);
 				}
@@ -118,6 +126,21 @@ $.extend(SVGManager.prototype, {
 					this.local.notSupportedText + '</p>';
 			}
 		}
+	},
+	
+	/* Add the SVG object using svgweb */
+	_svgWebAttachSVG: function(container, settings) {
+		svg = document.createElementNS(this.svgNS, 'svg');
+		svg.setAttribute('version', '1.1');
+		svg.setAttribute('width', container.clientWidth);
+		svg.setAttribute('height', container.clientHeight);
+		
+		var svgObj = this;
+		svg.addEventListener('SVGLoad', function(evt) {
+			svgObj._svg = this;
+			svgObj._afterLoad(container, this, settings || {});
+		})
+		svgweb.appendChild(svg, container);
 	},
 
 	/* SVG callback after loading - register SVG root. */
