@@ -16,6 +16,6 @@ it will just use it if it's available. A few specifics:
 * It honors svgweb's mechanisms for forcing Flash rendering on all browsers via
   GET parameter or "meta" tag; see the corresponding svgweb documentation.
 * If you do use svgweb and want scripts to work in IE, you have to use the
-  window.onsvgload event instead of the usually DOM load event, as specified in
+  window.onsvgload event instead of the usual DOM load event, as specified in
   the svgweb docs.
 * I haven't heavily tested this, yet. It may break.
