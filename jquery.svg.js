@@ -130,8 +130,7 @@ $.extend(SVGManager.prototype, {
 	
 	/* Add the SVG object using svgweb */
 	_svgWebAttachSVG: function(container, settings) {
-		svg = document.createElementNS(this.svgNS, 'svg');
-		svg.setAttribute('version', '1.1');
+		var svg = document.createElementNS(this.svgNS, 'svg');
 		svg.setAttribute('width', container.clientWidth);
 		svg.setAttribute('height', container.clientHeight);
 		
