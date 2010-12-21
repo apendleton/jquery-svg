@@ -15,7 +15,7 @@ $.fn.addClass = function(origAddClass) {
 			if (isSVGElem(this)) {
 				var node = this;
 				$.each(classNames.split(/\s+/), function(i, className) {
-					var classes = (node.className ? node.className.baseVal : node.getAttribute('class'));
+					var classes = (node.className ? node.className.baseVal : (node.getAttribute('class') ? node.getAttribute('class') : ''));
 					if ($.inArray(className, classes.split(/\s+/)) == -1) {
 						classes += (classes ? ' ' : '') + className;
 						(node.className ? node.className.baseVal = classes :
