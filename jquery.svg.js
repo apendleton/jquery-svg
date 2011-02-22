@@ -807,7 +807,7 @@ $.extend(SVGWrapper.prototype, {
 		var node = this._svg.ownerDocument.createElementNS($.svg.svgNS, nodeName);
 		for (var name in settings) {
 			var value = settings[name];
-			if (value != null && value != null && 
+			if (value != null && value != null && name != 'title' && 
 					(typeof value != 'string' || value != '')) {
 				node.setAttribute($.svg._attrNames[name] || name, value);
 			}
